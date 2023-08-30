@@ -24,5 +24,4 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'omniauth', '~> 2.0'
   gem.add_dependency 'omniauth-oauth2', '~> 1.7'
-  gem.add_dependency 'graphql-client'
 end
