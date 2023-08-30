@@ -9,7 +9,6 @@ module OmniAuth
         site: "https://api.monday.com/v2",
         authorize_url: "https://auth.monday.com/oauth2/authorize",
         token_url: "https://auth.monday.com/oauth2/token",
-        response_type: "code"
       }
 
       def request_phase
@@ -29,7 +28,7 @@ module OmniAuth
       uid { me["id"] }
 
       extra do
-        { raw_info: raw_info, me: me }
+        { raw_info: me }
       end
 
       def raw_info
@@ -38,31 +37,26 @@ module OmniAuth
 
       def me
         @me ||= begin
-          http = GraphQL::Client::HTTP.new(options.client_options.site) do |obj|
-            def headers(context)
-              {"Authorization" => "Bearer #{context[:token]}"}
-            end
-          end
-          schema = GraphQL::Client.load_schema(http)
-          client = GraphQL::Client.new(schema: schema, execute: http)
-          client.allow_dynamic_queries = true
-
-          gql = client.parse <<~GRAPHQL
-            query {
-              me {
-              email
-              name
-              id
-            }
-            }
-          GRAPHQL
-          response = client.query(gql, context: {token: access_token.token})
-          response.data.to_h
+          access_token.options[:mode] = :header
+          response = access_token.post("", body: { query: query }).parsed
+          response["data"]["me"].merge("account_id": response["account_id"])
         end
       end
 
       def callback_url
         full_host + script_name + callback_path
+      end
+
+      def query
+        <<~GRAPHQL
+          query {
+            me {
+            email
+            name
+            id
+          }
+          }
+        GRAPHQL
       end
     end
   end
