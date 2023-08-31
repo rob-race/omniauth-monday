@@ -1,5 +1,4 @@
 require "omniauth-oauth2"
-require "graphql/client"
 
 module OmniAuth
   module Strategies
