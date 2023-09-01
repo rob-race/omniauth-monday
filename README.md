@@ -1,38 +1,40 @@
-# Omniauth::Monday
+# OmniAuth Monday
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/omniauth/monday`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This is the official OmniAuth strategy for authenticating to Monday. To
+use it, you'll need to sign up for an OAuth2 Client ID and Secret at Monday.com.
 
 ## Installation
-
-Add this line to your application's Gemfile:
 
 ```ruby
 gem 'omniauth-monday'
 ```
 
-And then execute:
+## Basic Usage
 
-    $ bundle install
+```ruby
+use OmniAuth::Builder do
+  provider :monday, ENV['MONDAY_CLIENT_ID'], ENV['MONDAY_CLIENT_SECRET'], { scope: 'me boards:read' }
+end
+```
 
-Or install it yourself as:
+## Basic Usage Rails
 
-    $ gem install omniauth-monday
+In `config/initializers/monday.rb`
 
-## Usage
+```ruby
+  Rails.application.config.middleware.use OmniAuth::Builder do
+    provider :monday, ENV['MONDAY_CLIENT_ID'], ENV['MONDAY_CLIENT_SECRET'], { scope: 'me boards:read' }
+  end
+```
 
-TODO: Write usage instructions here
+## Semver
 
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+This project adheres to Semantic Versioning 2.0.0. Any violations of this scheme are considered to be bugs.
+All changes will be tracked [here](https://github.com/rob-race/omniauth-monday/releases).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/omniauth-monday.
+Bug reports and pull requests are welcome on GitHub at https://github.com/rob-race/omniauth-monday.
 
 ## License
 
