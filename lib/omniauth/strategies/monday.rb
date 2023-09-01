@@ -16,9 +16,7 @@ module OmniAuth
       def authorize_params
         super.tap do |params|
           %w[client_options].each do |v|
-            if request.params[v]
-              params[v.to_sym] = request.params[v]
-            end
+            params[v.to_sym] = request.params[v] if request.params[v]
           end
         end
       end
