@@ -21,6 +21,10 @@ module OmniAuth
         end
       end
 
+      def token_params
+        super.merge({client_id: options.client_id, client_secret: options.client_secret})
+      end
+
       uid { me["id"] }
 
       extra do
